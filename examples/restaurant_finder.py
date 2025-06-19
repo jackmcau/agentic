@@ -1,4 +1,15 @@
 from agentic.common import Agent, AgentRunner
+import os
+import requests
+
+def location_to_long_lat(address):
+    url = "https://maps.googleapis.com/maps/api/geocode/json"
+    # set up google maps api key with export GOOGLE_MAPS_API_KEY=<key>
+    key = os.environ["GOOGLE_MAPS_API_KEY"]
+    params = {"address": address, "key": key}
+    response = requests.get(url, params=params).json()
+    location = response["results"][0]["geometry"]["location"]
+    return f"Latitude: {location["lat"]}, Longitude: {location["lng"]}"
 
 agent = Agent(
     name="agent",
@@ -13,7 +24,7 @@ agent = Agent(
                 Then convert the location to longitude and latitude, the food to a cuisine type, and the time of day to breakfast, lunch, or dinner
                 Lastly, tell these converted values back to the user. Do not say anything other than the converted values.
                 """,
-    tools=[]
+    tools=[location_to_long_lat]
 )
 
 if __name__ == "__main__":
