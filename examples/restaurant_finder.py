@@ -3,6 +3,8 @@ import os
 import requests
 
 def location_to_long_lat(address):
+    # This was added due to an inconsistency in the longitude and latitude that ChatGPT gave to the actual location
+    # Longitude and latitude is supposedly needed in order to call the nearby search api from what I've seen
     url = "https://maps.googleapis.com/maps/api/geocode/json"
     # set up google maps api key with export GOOGLE_MAPS_API_KEY=<key>
     key = os.environ["GOOGLE_MAPS_API_KEY"]
